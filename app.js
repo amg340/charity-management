@@ -8,6 +8,7 @@
   const formMessage = document.getElementById('form-message');
 
   if (!donationForm || !donationList || !totalCollected || !totalDonations || !formMessage) {
+    console.warn('Donation app failed to initialize: required DOM elements are missing.');
     return;
   }
 
@@ -27,7 +28,12 @@
   }
 
   function saveDonations(donations) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(donations));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(donations));
+      return true;
+    } catch (_error) {
+      return false;
+    }
   }
 
   function renderSummary(donations) {
@@ -80,8 +86,18 @@
     const campaign = String(formData.get('campaign') || '').trim();
     const amount = Number(formData.get('amount'));
 
-    if (!donorName || !campaign || Number.isNaN(amount) || amount <= 0) {
-      formMessage.textContent = 'Please provide valid donation details.';
+    if (!donorName) {
+      formMessage.textContent = 'Please enter the donor name.';
+      return;
+    }
+
+    if (!campaign) {
+      formMessage.textContent = 'Please enter the campaign name.';
+      return;
+    }
+
+    if (Number.isNaN(amount) || amount <= 0) {
+      formMessage.textContent = 'Please enter a valid donation amount.';
       return;
     }
 
@@ -93,7 +109,10 @@
       createdAt: new Date().toISOString(),
     });
 
-    saveDonations(donations);
+    if (!saveDonations(donations)) {
+      formMessage.textContent = 'Unable to save donation data. Please check browser storage settings.';
+      return;
+    }
     donationForm.reset();
     formMessage.textContent = 'Donation recorded successfully.';
     render();
