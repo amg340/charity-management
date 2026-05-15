@@ -10,4 +10,4 @@ A simple web application for a charity organization to manage and collect donati
 - Persist donation data in browser local storage
 
 ## Run
-Open `/home/runner/work/charity-management/charity-management/index.html` in a browser.
+Open `index.html` in a browser.
