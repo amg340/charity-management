@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Charity Donation Management</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header>
+        <h1>Charity Donation Management</h1>
+        <p>Track donors, collect donations, and monitor progress.</p>
+      </header>
+
+      <section class="card">
+        <h2>Add Donation</h2>
+        <form id="donation-form" class="form">
+          <label>
+            Donor Name
+            <input id="donor-name" name="donorName" type="text" required />
+          </label>
+          <label>
+            Amount (USD)
+            <input id="donation-amount" name="amount" type="number" min="1" step="0.01" required />
+          </label>
+          <label>
+            Campaign
+            <input id="donation-campaign" name="campaign" type="text" required />
+          </label>
+          <button type="submit">Record Donation</button>
+        </form>
+        <p id="form-message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="stats" aria-label="Donation Summary">
+        <article class="card">
+          <h2>Total Collected</h2>
+          <p id="total-collected">$0.00</p>
+        </article>
+        <article class="card">
+          <h2>Total Donations</h2>
+          <p id="total-donations">0</p>
+        </article>
+      </section>
+
+      <section class="card">
+        <h2>Recent Donations</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Donor</th>
+                <th>Campaign</th>
+                <th>Amount</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="donation-list"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
