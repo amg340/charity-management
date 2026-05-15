@@ -73,6 +73,7 @@
 
   donationForm.addEventListener('submit', function (event) {
     event.preventDefault();
+    formMessage.textContent = '';
 
     const formData = new FormData(donationForm);
     const donorName = String(formData.get('donorName') || '').trim();
