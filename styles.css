@@ -90,3 +90,7 @@ td {
   font-weight: 600;
   color: #1e7d34;
 }
+
+#form-message.is-error {
+  color: #b00020;
+}

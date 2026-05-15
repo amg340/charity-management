@@ -36,6 +36,11 @@
     }
   }
 
+  function setFormMessage(message, isError) {
+    formMessage.textContent = message;
+    formMessage.classList.toggle('is-error', Boolean(isError));
+  }
+
   function renderSummary(donations) {
     const total = donations.reduce((sum, donation) => sum + donation.amount, 0);
     totalCollected.textContent = currencyFormatter.format(total);
@@ -61,7 +66,11 @@
         amountCell.textContent = currencyFormatter.format(donation.amount);
 
         const dateCell = document.createElement('td');
-        dateCell.textContent = new Date(donation.createdAt).toLocaleDateString();
+        dateCell.textContent = new Date(donation.createdAt).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        });
 
         row.appendChild(donorCell);
         row.appendChild(campaignCell);
@@ -79,7 +88,7 @@
 
   donationForm.addEventListener('submit', function (event) {
     event.preventDefault();
-    formMessage.textContent = '';
+    setFormMessage('', false);
 
     const formData = new FormData(donationForm);
     const donorName = String(formData.get('donorName') || '').trim();
@@ -87,17 +96,17 @@
     const amount = Number(formData.get('amount'));
 
     if (!donorName) {
-      formMessage.textContent = 'Please enter the donor name.';
+      setFormMessage('Please enter the donor name.', true);
       return;
     }
 
     if (!campaign) {
-      formMessage.textContent = 'Please enter the campaign name.';
+      setFormMessage('Please enter the campaign name.', true);
       return;
     }
 
     if (Number.isNaN(amount) || amount <= 0) {
-      formMessage.textContent = 'Please enter a valid donation amount.';
+      setFormMessage('Please enter a valid donation amount.', true);
       return;
     }
 
@@ -110,11 +119,11 @@
     });
 
     if (!saveDonations(donations)) {
-      formMessage.textContent = 'Unable to save donation data. Please check browser storage settings.';
+      setFormMessage('Unable to save donation data. Please check browser storage settings.', true);
       return;
     }
     donationForm.reset();
-    formMessage.textContent = 'Donation recorded successfully.';
+    setFormMessage('Donation recorded successfully.', false);
     render();
   });
 
